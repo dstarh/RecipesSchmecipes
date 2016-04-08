@@ -14,7 +14,6 @@ var SearchBar = require('./SearchBar');
 var RecipeRow = require('./RecipeRow');
 var RecipeCard = require('./RecipeCard');
 var ApiKeys = require('./ApiKeys')
-
 var API_URL = "https://api.nutrio.com"
 
 
@@ -88,6 +87,7 @@ var SearchScreen = React.createClass({
           dataSource={this.state.dataSource}
           renderRow={this.renderRow}
           showsVerticalScrollIndicator={false}
+          style={styles.listView}
         />
       </View>
     );
@@ -95,6 +95,9 @@ var SearchScreen = React.createClass({
 })
 
 const styles = StyleSheet.create({
+  listView: {
+    alignSelf: 'stretch',
+  },
   container: {
     flex: 1,
     justifyContent: 'center',

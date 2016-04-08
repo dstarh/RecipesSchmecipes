@@ -10,30 +10,46 @@ var {
 } = React;
 
 var getImageSource = require('./getImageSource');
+var Swipeout = require('react-native-swipeout')
 
 var RecipeRow = React.createClass({
   render: function() {
+    let swipeBtns = [{
+      text: 'Favorite this Recipe',
+      backgroundColor: 'green',
+      onPress: () => { console.log("add to favorites") }
+    }];
     return(
-      <View>
-        <TouchableWithoutFeedback
-          onPress={this.props.onSelect}>
-          <View style={styles.row}>
-            <Image 
-              source={getImageSource(this.props.recipe, 1)}
-              style={styles.rowImage}/>
-            <View style={styles.textContainer}>
-              <Text style={styles.recipeName} numberOfLines={2}>
-                {this.props.recipe.name}
-              </Text>
+      <View style={styles.rowContainer}>
+        <Swipeout right={swipeBtns}
+          autoClose='true'
+          backgroundColor='transparent'>
+          <TouchableWithoutFeedback
+            underlayColor='rgba(192,192,192,1,0.6)'
+            onPress={this.props.onSelect}>
+            <View style={styles.row}>
+              <Image 
+                source={getImageSource(this.props.recipe, 1)}
+                style={styles.rowImage}/>
+              <View style={styles.textContainer}>
+                <Text style={styles.recipeName} numberOfLines={2}>
+                  {this.props.recipe.name}
+                </Text>
+              </View>
             </View>
-          </View>
-        </TouchableWithoutFeedback>
+          </TouchableWithoutFeedback>
+        </Swipeout>
       </View>
     );
   }
 });
 
 var styles = StyleSheet.create({
+  rowContainer: {
+    flex: 1,
+    justifyContent: "center",
+    flexWrap: 'wrap',
+  },
   textContainer: {
     flex: 1,
   },
@@ -43,6 +59,7 @@ var styles = StyleSheet.create({
     fontWeight: '500',
     marginBottom: 2,
     alignItems: 'center',
+    justifyContent: "center",
   },
   row: {
     alignItems: 'center',
