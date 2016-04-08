@@ -11,6 +11,8 @@ var {
 } = React;
 
 var SearchBar = require('./SearchBar');
+var RecipeRow = require('./RecipeRow');
+var RecipeCard = require('./RecipeCard');
 var ApiKeys = require('./ApiKeys')
 
 var API_URL = "https://api.nutrio.com"
@@ -34,9 +36,6 @@ var SearchScreen = React.createClass({
     if (query === '') {
       fetch(this.getFeaturedRecipesEndpoint(), this.getFetchOptions())
         .then((response) => {
-          console.log(this.getFetchOptions());
-          console.log(this.getFeaturedRecipesEndpoint());
-          console.log(response);
           return response.json();
         })
         .then((responseData) => {
@@ -66,28 +65,30 @@ var SearchScreen = React.createClass({
   },
   renderRow: function(recipe: Object){
     return(
-      <View>
-        <Text>
-          {recipe.name}
-        </Text>
-      </View>
-    )
+      <RecipeRow 
+      key={recipe.id}
+      onSelect={() => this.selectRecipe(recipe)}
+      recipe={recipe}/>
+    );
+  },
+  selectRecipe: function(recipe: Object){
+    this.props.navigator.push({
+      title: recipe.name,
+      component: RecipeCard,
+      passProps: {recipe},
+    });
   },
   render: function() {
-    console.log("render is being called");
     return (
-      <View>
+      <View style={styles.container}>
         <View>
           <SearchBar />
         </View>
         <ListView
           dataSource={this.state.dataSource}
           renderRow={this.renderRow}
+          showsVerticalScrollIndicator={false}
         />
-
-        <View style={styles.container}>
-          <Text style={styles.welcome}>{ApiKeys.user}{' '}{ApiKeys.cobrand}</Text>
-        </View>
       </View>
     );
   }
@@ -98,7 +99,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#fff',
   },
   welcome: {
     fontSize: 20,
