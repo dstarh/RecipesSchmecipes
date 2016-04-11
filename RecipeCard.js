@@ -14,7 +14,7 @@ var {
 var {height, width} = Dimensions.get('window');
 var ApiKeys = require('./ApiKeys')
 var getImageSource = require('./getImageSource');
-// var entities = require('entities')
+var entities = require('entities')
 var API_URL = "https://api.nutrio.com"
 var RecipeCard = React.createClass({
   getInitialState: function() {
@@ -49,7 +49,7 @@ var RecipeCard = React.createClass({
   },
   renderIngredient: function(ingredient: Object) {
     return (
-      <Text style={styles.ingredient}>{ingredient.food.name}</Text>
+      <Text style={styles.ingredient}>{entities.decodeHTML(ingredient.food.name)}</Text>
     )
   },
   renderPrepNote: function(
@@ -60,7 +60,7 @@ var RecipeCard = React.createClass({
   ) {
     return (
       <View>
-        <Text style={styles.ingredient}>{parseInt(rowID) + 1}:{' '}{prepNote.action}</Text>
+        <Text style={styles.ingredient}>{parseInt(rowID) + 1}:{' '}{entities.decodeHTML(prepNote.action)}</Text>
       </View>
     )
   },
@@ -89,7 +89,7 @@ var RecipeCard = React.createClass({
         </View>
         <View>
           <Text style={styles.recipeName}>
-            {this.props.recipe.name}
+            {entities.decodeHTML(this.props.recipe.name)}
           </Text>
         </View>
         <Text style={styles.header}>
